@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI與數位學習教學主題總覽</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Inter:wght@300;400;600;700&display=swap');
+
+  :root {
+    --primary: #1A56A0;
+    --primary-light: #2A76D0;
+    --primary-dark: #0E3A72;
+    --accent: #E8A020;
+    --accent-light: #F5C55A;
+    --bg: #F0F4FA;
+    --surface: #FFFFFF;
+    --surface-2: #EEF4FB;
+    --text: #1C2B3A;
+    --text-muted: #5A7090;
+    --border: #C8D8EC;
+    --tag-bg: #D5E8F0;
+    --tag-text: #0E3A72;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(26,86,160,0.10);
+    --shadow-hover: 0 8px 36px rgba(26,86,160,0.18);
+    --transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-size: 19px; 
+    font-family: 'Noto Sans TC', 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, #0E3A72 0%, #1A56A0 55%, #2A76D0 100%);
+    padding: 60px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(232,160,32,0.2);
+    border: 1px solid rgba(232,160,32,0.5);
+    color: var(--accent-light);
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    color: #fff;
+    font-size: clamp(1.9rem, 5vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--accent-light); }
+  .hero p {
+    color: rgba(255,255,255,0.75);
+    font-size: 1.25rem;
+    max-width: 560px;
+    margin: 0 auto 32px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 2.2rem; font-weight: 900; color: var(--accent-light); line-height: 1; }
+  .stat-label { font-size: 1.02rem; color: rgba(255,255,255,0.65); margin-top: 4px; }
+
+  /* ─── CONTROLS ─── */
+  .controls {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(26,86,160,0.07);
+  }
+  .controls-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 220px;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  #search {
+    width: 100%;
+    padding: 10px 12px 10px 40px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 1.15rem;
+    font-family: inherit;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: var(--transition);
+  }
+  #search:focus { border-color: var(--primary-light); background: #fff; }
+
+  .filter-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 1.02rem;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+  .filter-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  .results-info {
+    margin-left: auto;
+    font-size: 1.02rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  /* ─── SIDEBAR NAV ─── */
+  .sidebar {
+    position: sticky;
+    top: 76px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  .sidebar h3 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0 4px 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1.03rem;
+    color: var(--text-muted);
+    transition: var(--transition);
+    line-height: 1.45;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: var(--surface-2); color: var(--primary); }
+  .nav-item.active { background: var(--surface-2); color: var(--primary); font-weight: 600; }
+  .nav-num {
+    flex-shrink: 0;
+    background: var(--tag-bg);
+    color: var(--primary-dark);
+    font-size: 0.9rem;
+    font-weight: 700;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .nav-item.active .nav-num { background: var(--primary); color: #fff; }
+
+  /* ─── CONTENT ─── */
+  .content { display: flex; flex-direction: column; gap: 28px; }
+
+  .category-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+    scroll-margin-top: 90px;
+  }
+  .category-card.hidden { display: none; }
+
+  .cat-header {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    padding: 20px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+  }
+  .cat-num {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+  }
+  .cat-title {
+    flex: 1;
+    font-size: 1.28rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.4;
+  }
+  .cat-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .cat-count {
+    font-size: 0.98rem;
+    background: rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.85);
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .cat-toggle {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    transition: var(--transition);
+    flex-shrink: 0;
+  }
+  .cat-header.collapsed .cat-toggle { transform: rotate(-90deg); }
+
+  .topics-wrap { padding: 20px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .topics-wrap.collapsed { display: none; }
+
+  .topic-card {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    transition: var(--transition);
+  }
+  .topic-card:hover { border-color: var(--primary-light); box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .topic-card.topic-hidden { display: none; }
+
+  .topic-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    background: var(--surface);
+  }
+  .topic-num {
+    flex-shrink: 0;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 800;
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .topic-title-text {
+    flex: 1;
+    font-size: 1.17rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    line-height: 1.45;
+  }
+  .topic-arrow {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: var(--transition);
+    margin-top: 2px;
+  }
+  .topic-header.open .topic-arrow { transform: rotate(90deg); color: var(--primary); }
+
+  .topic-body { font-size: 19px; 
+    display: none;
+    padding: 0 16px 16px 54px;
+    background: var(--surface-2);
+    border-top: 1px solid var(--border);
+  }
+  .topic-body.open { display: block; }
+  .topic-desc {
+    font-size: 1.11rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    padding-top: 14px;
+  }
+  .topic-desc mark {
+    background: rgba(232,160,32,0.25);
+    color: var(--text);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+
+  /* ─── NO RESULTS ─── */
+  .no-results {
+    display: none;
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--text-muted);
+  }
+  .no-results svg { margin-bottom: 16px; opacity: 0.4; }
+  .no-results h3 { font-size: 1.3rem; margin-bottom: 8px; }
+  .no-results p { font-size: 1.1rem; }
+
+  /* ─── EXPAND ALL BTN ─── */
+  .expand-all-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 1.02rem;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .expand-all-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+
+  /* ─── BACK TO TOP ─── */
+  #back-top {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    width: 44px; height: 44px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(26,86,160,0.3);
+    transition: var(--transition);
+    z-index: 200;
+  }
+  #back-top.visible { display: flex; }
+  #back-top:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 860px) {
+    .main { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .hero h1 { font-size: 1.7rem; }
+    .hero-stats { gap: 20px; }
+    .stat-num { font-size: 1.7rem; }
+  }
+
+  /* scrollbar */
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">2025 教學主題資源庫</div>
+  <h1>AI與<span>數位學習</span><br>教學主題總覽</h1>
+  <p>涵蓋 15 大類別、75 項教學研究主題，整合最新 AI 教育趨勢與實踐策略，供教師研習與課程設計參考。</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">15</div><div class="stat-label">核心類別</div></div>
+    <div class="stat"><div class="stat-num">75</div><div class="stat-label">教學主題</div></div>
+    <div class="stat"><div class="stat-num">K-12</div><div class="stat-label">適用階段</div></div>
+    <div class="stat"><div class="stat-num">108</div><div class="stat-label">課綱對應</div></div>
+  </div>
+</header>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#8AA0BC" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input id="search" type="text" placeholder="搜尋主題或關鍵字…" autocomplete="off">
+    </div>
+    <div class="filter-btns" id="filterBtns">
+      <button class="filter-btn active" data-filter="all">全部類別</button>
+      <button class="filter-btn" data-filter="ai">AI應用</button>
+      <button class="filter-btn" data-filter="data">數據分析</button>
+      <button class="filter-btn" data-filter="design">課程設計</button>
+      <button class="filter-btn" data-filter="teacher">教師發展</button>
+      <button class="filter-btn" data-filter="student">學生學習</button>
+    </div>
+    <button class="expand-all-btn" id="expandAllBtn">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M4 8h16M4 16h16"/>
+      </svg>
+      全部展開
+    </button>
+    <span class="results-info" id="resultsInfo">顯示 15 / 15 類別</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <h3>類別導覽</h3>
+    <div id="navItems"></div>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content" id="content"></div>
+  <div class="no-results" id="noResults">
+    <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <h3>找不到相關主題</h3>
+    <p>請嘗試不同的關鍵字或清除篩選條件</p>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="back-top" title="回到頂部" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+    <path d="M18 15l-6-6-6 6"/>
+  </svg>
+</button>
+
+<script>
+const DATA = [
+  {
+    cat: "AI與數位學習教學理論與趨勢",
+    tags: ["ai", "design"],
+    topics: [
+      { title: "建構主義與AI個人化學習的融合", desc: "探討Vygotsky最近發展區理論如何與AI適性學習系統結合，讓AI成為學生的「智能鷹架」，依據學習者的先備知識與學習速率動態調整教學內容，實現真正意義上的個別化教育。" },
+      { title: "混成學習（Hybrid Learning）的理論框架更新", desc: "在後疫情時代，混成學習已從權宜之計演變為主流模式。探討SAMR模型與TPACK框架如何在AI工具加持下進行理論層面的重構，並分析其對教學設計的啟示。" },
+      { title: "連結主義（Connectivism）在數位時代的延伸", desc: "Siemens的連結主義強調學習發生於網絡節點之間。探討在生成式AI崛起後，知識節點的定義是否需要重新界定，以及AI如何成為學習者知識網絡中的重要節點。" },
+      { title: "多模態學習理論（Multimodal Learning Theory）與AI", desc: "Mayer的多媒體學習認知理論指出，整合文字、圖像、聲音可降低認知負荷。分析AI生成式工具如何協助教師產製多模態教材，以及相關神經教育學研究的最新進展。" },
+      { title: "翻轉學習（Flipped Learning）2.0的AI驅動演化", desc: "傳統翻轉學習以影片預習為核心，探討AI如何將翻轉邏輯延伸為「AI預診斷—課中深化—AI後補強」的三段式新模式，並分析其與自主學習能力培養之關聯。" }
+    ]
+  },
+  {
+    cat: "學習行為的診斷與分析",
+    tags: ["data", "student"],
+    topics: [
+      { title: "學習歷程資料的多維分析架構", desc: "建立涵蓋認知、行為、情感三維度的學習行為分析模型，運用序列分析（Sequential Analysis）技術追蹤學生在數位學習平台上的操作軌跡，找出影響學習成效的關鍵行為指標。" },
+      { title: "眼動追蹤技術在閱讀診斷中的應用", desc: "利用眼動儀分析學生在數位文本閱讀時的凝視點分佈、回視頻率與掃視路徑，診斷閱讀困難類型並設計差異化的閱讀教學介入策略，提升國中小學生的數位閱讀素養。" },
+      { title: "情緒感知AI在課堂投入度監測上的倫理與應用", desc: "探討運用電腦視覺與情感運算技術即時分析學生的面部表情與肢體語言，以評估課堂投入程度的技術可行性、準確性，以及隱私保護、數據使用同意等核心倫理議題。" },
+      { title: "拖延行為的數位足跡分析與早期預警", desc: "透過分析學生在學習管理系統（LMS）中的登入時間、作業提交模式、影片暫停點等行為數據，建立學業風險預警模型，在學生產生顯著落後前提前介入輔導。" },
+      { title: "協作學習中的社會網絡分析（SNA）應用", desc: "運用社會網絡分析方法，視覺化呈現小組協作學習中的互動網絡結構，識別「知識傳遞者」與「孤立節點」，協助教師優化分組策略並促進更均衡的知識流通。" }
+    ]
+  },
+  {
+    cat: "AI與數位學習歷程分析",
+    tags: ["ai", "data", "student"],
+    topics: [
+      { title: "學習歷程檔案（ePortfolio）的AI智慧評析", desc: "探討生成式AI如何自動分析學生的數位學習歷程檔案，從時序性成長、反思深度、跨科連結等向度提供結構化的質性回饋，並協助教師進行大規模的學習歷程評閱工作。" },
+      { title: "STEM學習路徑的知識圖譜建構", desc: "運用知識圖譜（Knowledge Graph）技術，自動萃取學生在STEM學習歷程中的概念理解軌跡，識別個別學生的知識斷層位置，並自動推薦最適化的補強學習資源。" },
+      { title: "跨平台學習數據的整合與標準化", desc: "當學生同時使用Google Classroom、Kahoot、Padlet等多種數位工具時，如何透過xAPI等學習數據標準統整分散式歷程數據，建立完整的個人學習輪廓（Learner Profile）。" },
+      { title: "AI輔助的批判性思考能力縱貫追蹤", desc: "設計基於自然語言處理的分析工具，針對學生在線上討論論壇、學習日誌等文本中批判性思考指標的出現頻率與深度進行長期追蹤，評估思考能力的發展軌跡。" },
+      { title: "遊戲化學習平台中的行為數據挖掘", desc: "從教育遊戲或闖關式學習平台中萃取玩家行為數據，運用機器學習方法分析試誤模式、策略選擇傾向與堅持度，發掘這些隱性指標與學習遷移能力之間的關聯。" }
+    ]
+  },
+  {
+    cat: "AI與數位學習課程規劃與設計",
+    tags: ["ai", "design"],
+    topics: [
+      { title: "AI輔助逆向設計（UbD）課程開發", desc: "將Wiggins與McTighe的逆向設計框架與生成式AI工具整合，探討AI如何協助教師從「預期學習結果」出發，自動對齊評量任務、產製教學活動序列，並檢核課程設計的內部一致性。" },
+      { title: "差異化課程設計的AI自動化實踐", desc: "面對班級內多元能力程度的現實，探討AI工具如何依據學生的學習準備度、興趣及學習側面，自動生成不同難度層次的任務菜單（Task Menu）與分層任務單，實踐普世學習設計（UDL）理念。" },
+      { title: "跨領域課程（PBL）的AI輔助主題鷹架", desc: "在專題式學習中，AI可扮演「課程設計顧問」角色，協助教師在多個學科知識點間建立有意義的連結，生成驅動問題（Driving Question）、評量規準及階段性任務清單，降低跨科PBL課程設計的複雜度。" },
+      { title: "AI素養融入各科課程的螺旋式課程設計", desc: "探討如何將AI概念理解、AI倫理思辨與AI工具應用，依據認知發展理論，以螺旋式的方式融入K-12各學習階段的不同學科，避免孤立的「AI課」，實現真正的跨科統整。" },
+      { title: "開放式教育資源（OER）的AI客製化重組", desc: "探討如何運用AI技術對龐大的OER資源庫（如Coursera、Khan Academy）進行智慧搜尋、內容摘要、難度分級與學科對齊，協助台灣教師快速篩選並重組適合本地課程脈絡的教學材料。" }
+    ]
+  },
+  {
+    cat: "AI與數位學習教學策略與模式",
+    tags: ["ai", "design", "teacher"],
+    topics: [
+      { title: "蘇格拉底式AI對話教學的設計與實踐", desc: "設計讓AI扮演「蘇格拉底式教師」角色的對話教學流程，透過連串的追問引導學生自我建構概念理解，而非直接給答案。探討此模式在培養學生深層思考與元認知能力上的效果。" },
+      { title: "同儕教學（Peer Instruction）與AI即時反饋的整合", desc: "將Mazur的同儕教學法與AI投票系統和即時數據分析結合，探討AI如何在課中快速識別學生的迷思概念分佈，輔助教師即時調整解說策略，並促進更有目的性的同儕討論。" },
+      { title: "生成式AI作為認知學徒制的「主人」角色", desc: "在認知學徒制框架下，探討讓學生透過觀察AI完成複雜任務（示範）、在AI輔助下嘗試（訓練）、再由AI逐步放手（淡化）的三階段教學模式，及其在程式設計、寫作等學科的應用案例。" },
+      { title: "問題本位學習（PBL）中AI扮演的多重角色", desc: "在PBL情境中，AI可扮演「資料查詢者」、「方案評估者」、「反駁者」或「使用者模擬者」等多重角色，探討這些不同角色設定對學生高階思考能力與問題解決歷程的差異化影響。" },
+      { title: "沉浸式模擬情境（Immersive Simulation）教學策略", desc: "運用VR/AR與AI對話系統建構高擬真的情境模擬，如歷史情境再現、醫護實境演練、法庭辯論等，探討沉浸式情境在提升情境學習（Situated Learning）效果上的設計原則與實證成效。" }
+    ]
+  },
+  {
+    cat: "AI與數位學習教學與評量",
+    tags: ["ai", "student", "design"],
+    topics: [
+      { title: "AI驅動的素養導向真實性評量設計", desc: "探討如何運用AI工具設計對應108課綱核心素養的「真實性任務」，從現實世界問題情境出發，設計多元表現任務評量（Performance Task），並運用AI輔助建立客觀的評分規準（Rubric）。" },
+      { title: "形成性評量的自動化AI回饋系統", desc: "建構能即時分析學生作業、提供具體、可操作之形成性回饋的AI評量系統，探討AI回饋的品質控制、回饋及時性與師生信任感等課題，及其與教師人工回饋的最佳化互補模式。" },
+      { title: "AI偵測學術誠信問題的挑戰與因應", desc: "面對生成式AI使學術抄襲偵測複雜化的現實，探討目前主流AI寫作偵測工具的準確率、誤判問題，以及學校如何轉型評量設計（如強調過程性評量、口頭答辯）來維護學術誠信精神。" },
+      { title: "適性化測驗（CAT）在中小學的落地應用", desc: "探討CAT如何根據學生的作答表現動態調整試題難度，在較少題目的情況下精準估算能力值，以及如何克服題庫建置成本高昂、公平性疑慮等挑戰，在台灣中小學教育場域中實際推廣應用。" },
+      { title: "多元智能觀點下的AI多元評量設計", desc: "依據Gardner多元智能理論，探討AI如何協助教師為同一學習目標設計差異化的評量途徑，讓學生可透過簡報、影片、模型製作、角色扮演等多元形式展現學習成果，並由AI協助跨形式的學習表現分析。" }
+    ]
+  },
+  {
+    cat: "數位學習新科技（VR與教育元宇宙）教學與應用",
+    tags: ["ai", "student"],
+    topics: [
+      { title: "教育元宇宙平台（Metaverse in Education）的設計原則", desc: "分析Minecraft Education、Roblox Education、Engage等主流教育元宇宙平台的功能特性，歸納「高沉浸感、社會性互動、創造性表達、可量測學習」四大設計原則，並探討其在不同學科領域的應用模式。" },
+      { title: "VR技術在高風險情境學習中的應用", desc: "探討VR在高中職消防安全演練、醫護急救訓練、化學實驗操作等「高成本、高風險」學習情境中的應用效益，分析沉浸感、臨場感（Presence）對技能遷移與保留率的影響。" },
+      { title: "AR擴增實境在自然科學探究課程中的融入", desc: "研究如何在國中自然科探究活動中，運用平板電腦AR功能將三維分子模型、地球科學地層剖面、生態系統食物網等抽象概念視覺化，提升學生的空間推理能力與概念理解深度。" },
+      { title: "數位孿生（Digital Twin）在STEM教育中的應用", desc: "探討將現實世界工程系統的數位孿生模型（如橋梁、城市交通系統）引入STEM課堂，讓學生在安全的數位環境中進行假設驗證（What-if analysis）實驗，培養系統思考與工程設計能力。" },
+      { title: "元宇宙中的社會情感學習（SEL）機會與挑戰", desc: "在虛擬世界的匿名性與化身（Avatar）特性下，探討元宇宙平台如何成為培養學生同理心、衝突解決、協作溝通等社會情感技能（SEL）的新場域，以及隨之而來的網路霸凌、身份認同等風險管理議題。" }
+    ]
+  },
+  {
+    cat: "AI與數位學習教師專業社群",
+    tags: ["teacher"],
+    topics: [
+      { title: "AI工具共備社群（Co-Planning Community）的運作模式", desc: "探討教師如何組建以「AI輔助教學設計」為核心的專業學習社群（PLC），透過定期的課程共備、試教觀察與數據討論循環，協作精煉AI在課堂中的應用方式，並建立可複製的社群運作SOP。" },
+      { title: "AI實踐知識（PCK）的社群共享與傳播", desc: "探討有效將AI工具融入教學的「AI學科教學知識（AI-PCK）」如何在教師社群中被有效萃取、系統化描述並廣泛傳播，克服個別教師實踐知識難以外顯化的瓶頸。" },
+      { title: "跨校教師AI學習社群的線上線下整合模式", desc: "分析Google Teacher Communities、教師交流平台等跨校教師網絡的經營策略，探討如何設計兼具非同步資源共享與同步協作研討的混成社群運作模式，維持教師長期參與動機。" },
+      { title: "AI工具評估的社群式實踐研究（Action Research）", desc: "倡導建立教師社群主導的AI工具實踐研究文化，教師以「行動研究者」身份系統化地測試、評估各類AI教育工具的實際課堂效益，並將研究結果回饋至社群知識庫，形成本土化的AI教育實證基礎。" },
+      { title: "社群媒體作為非正式教師AI專業學習場域", desc: "分析教師在Twitter/X、Facebook社群、YouTube教學頻道等社群媒體上自發進行AI工具分享、互相學習的非正式學習生態，探討如何引導這些自發性社群能量，與正式的教師研習體系形成互補。" }
+    ]
+  },
+  {
+    cat: "AI與數位學習領導",
+    tags: ["teacher", "data"],
+    topics: [
+      { title: "學校數位轉型領導力的核心能力架構", desc: "建構校長與行政主管在推動學校數位轉型時所需的「AI領導力能力框架」，涵蓋AI願景建構、數位文化塑造、資源整合、風險管理與數位倫理治理等核心能力面向，並提供對應的領導力發展路徑。" },
+      { title: "數據導向決策（DDDM）的學校領導實踐", desc: "探討如何建立學校層級的數據治理機制，讓行政決策從「直覺與經驗」轉向「數據知情決策」，包括建立學校儀表板、培養數據讀寫能力的主管培訓，以及如何在數據驅動與教育專業判斷之間取得平衡。" },
+      { title: "AI導入的變革管理（Change Management）策略", desc: "運用Kotter八步驟變革模型分析學校導入AI教學工具時常見的阻力來源（教師焦慮、家長疑慮、基礎設施不足），並提出針對教育場域特性設計的三年期AI導入變革管理路徑圖。" },
+      { title: "教師AI能力的校本評估與分層支持體系", desc: "探討學校如何建立教師AI能力的校本評估工具，依據評估結果將教師分層（探索者、整合者、創新者），並設計差異化的支持措施（自學資源、同儕指導、外部專家工作坊），建立可持續的AI教師能力提升機制。" },
+      { title: "教育AI政策解讀與校本落地的領導角色", desc: "分析教育部及縣市教育局AI相關政策（如AI課程綱要補充說明、數位學習推動計畫），探討學校領導者如何擔任政策詮釋者的角色，將上位政策有效轉化為符合學校情境的具體行動方案。" }
+    ]
+  },
+  {
+    cat: "親師溝通與家長參與",
+    tags: ["teacher", "student"],
+    topics: [
+      { title: "AI輔助親師溝通工具的應用與倫理", desc: "探討LINE官方帳號、AI聊天機器人等工具在家校聯絡上的應用，如何協助教師高效回應家長常見問題、自動發送個人化的學習進度報告，同時釐清AI輔助溝通中的隱私保護與資訊準確性責任歸屬問題。" },
+      { title: "家長數位素養提升與AI教育焦慮的化解", desc: "面對家長對子女使用AI工具的擔憂（如成癮、作弊、資訊安全），探討學校如何設計「家長AI工作坊」，提升家長的數位素養與AI基本認識，並建立家校在AI教育上的共識與信任基礎。" },
+      { title: "數位學習成果的可視化親師溝通設計", desc: "探討如何將學習管理系統中的複雜數據轉化為家長易於理解的視覺化圖表，設計「學習成效家長版儀表板」，讓家長能清楚了解孩子的學習軌跡、能力成長與需要加強的領域，促進更有意義的親師對話。" },
+      { title: "家長志工資源的數位化管理與善用", desc: "探討如何運用數位工具有效招募、配對與管理家長志工，讓家長的專業技能（如業界AI實務、科技業背景）能有效融入學校課程，成為教師推動AI教學的重要社區資源。" },
+      { title: "弱勢家庭的數位落差與家長參與策略", desc: "針對偏鄉或經濟弱勢家庭，探討數位落差（設備、網路、數位能力不足）對家長參與數位學習的影響，以及學校可採取的差異化親師溝通策略（多管道觸及、實體補充資源、社工協作機制）。" }
+    ]
+  },
+  {
+    cat: "生成式AI在教育上的應用",
+    tags: ["ai", "teacher", "student"],
+    topics: [
+      { title: "生成式AI在寫作教學中的鷹架與挑戰", desc: "探討ChatGPT、Gemini等生成式AI如何作為寫作過程中的「智能鷹架」，在構思（Brainstorming）、草稿修訂（Revision）、風格優化等階段提供支持，以及如何避免學生過度依賴導致寫作能力退化的核心挑戰。" },
+      { title: "生成式AI在差異化教材製作上的應用", desc: "探討教師如何運用生成式AI在極短時間內，依據不同閱讀層級、語言背景或學習風格，將同一份教材改編為多個差異化版本，並評估AI生成教材的準確性驗證工作流程與品質控管機制。" },
+      { title: "AI生成圖像在視覺藝術與美感教育中的應用", desc: "探討Midjourney、DALL-E、Stable Diffusion等AI圖像生成工具在高中視覺藝術課程中的教學應用，包括激發創意、概念視覺化、美學分析對比，以及版權歸屬、AI藝術的本質等倫理哲學議題。" },
+      { title: "生成式AI在STEM探究報告撰寫上的輔助", desc: "探討學生在自然科學探究與實作、社會科學研究等課程中，如何以負責任的方式運用生成式AI輔助文獻回顧、研究架構規劃、數據詮釋說明等環節，以及教師如何設計評量確保學生思考的真實參與。" },
+      { title: "Prompt Engineering作為新興核心學習能力", desc: "分析「提示詞工程」（Prompt Engineering）作為未來公民必備能力的重要性，探討如何在K-12課程中系統化教導學生撰寫高品質提示詞的技巧（角色設定、任務分解、格式指定、範例提供），並設計相應的評量任務。" }
+    ]
+  },
+  {
+    cat: "中小學學生AI素養的教學與評量",
+    tags: ["ai", "student", "design"],
+    topics: [
+      { title: "K-12 AI素養螺旋課程的設計架構", desc: "參照美國AI4K12、歐盟DigComp等AI素養框架，結合台灣108課綱精神，設計適合國小、國中、高中不同階段的AI素養概念螺旋，涵蓋AI概念理解、AI工具應用、AI倫理思辨三大面向的進階學習目標。" },
+      { title: "不插電AI教學（Unplugged AI）活動的設計與實踐", desc: "探討如何透過不需要電腦的「不插電」活動（如手動分類遊戲模擬機器學習、人工神經網路角色扮演、演算法橫渡河流遊戲），讓資源有限的偏鄉學校或低年級學生也能理解AI的核心概念與運作原理。" },
+      { title: "中小學AI倫理素養的情境式教學設計", desc: "設計以真實AI倫理議題為主軸的情境學習任務（如AI人臉辨識的種族偏見、社群媒體演算法的同溫層效應、自動駕駛的道德兩難），培養學生以多元視角分析AI倫理問題的思辨能力。" },
+      { title: "創意AI應用專題（AI Maker Projects）的評量設計", desc: "探討以Scratch AI擴充、ml5.js、Teachable Machine等低門檻工具為基礎的「AI創作專題」課程，如何設計能同時評估AI概念理解、創意問題解決、計算思維與協作溝通能力的整合性評量規準。" },
+      { title: "AI素養評量工具的本土化開發與驗證", desc: "分析現有國際AI素養評量工具（如AI Literacy Assessment, AILA）的內容架構與信效度資料，探討如何根據台灣中小學課程脈絡與文化因素進行本土化改編與驗證，建立適合台灣學生的AI素養評量工具。" }
+    ]
+  },
+  {
+    cat: "中小學教師AI素養的提升與評估",
+    tags: ["teacher", "ai"],
+    topics: [
+      { title: "教師AI-TPACK能力框架的建構與應用", desc: "在Mishra與Koehler的TPACK框架基礎上，擴展建構「AI-TPACK」能力框架，涵蓋教師對AI技術知識（AK）、AI融入學科教學知識（AIPCK）的理解，並設計對應的教師自評量表與能力發展路徑圖。" },
+      { title: "差異化的教師AI研習課程設計", desc: "針對「AI懷疑者」、「AI嘗試者」、「AI整合者」三種類型的教師，分別設計焦慮消除、工具體驗、深度整合三種層次的研習課程，探討如何以「做中學」為核心設計高遷移率的教師AI研習活動。" },
+      { title: "教師AI使用的SAMR模型應用層次分析", desc: "運用Puentedura的SAMR模型（替代、擴增、修正、重新定義）分析台灣中小學教師目前的AI工具應用層次分佈，識別普遍停留於「替代」層次的原因，並提出促進教師向「修正」與「重新定義」層次邁進的支持策略。" },
+      { title: "教師AI素養的校本評估工具開發", desc: "探討學校如何開發適合本校情境的教師AI素養校本評估工具，兼顧「AI知識理解」、「AI教學整合能力」與「AI倫理意識」三個向度，並設計兼具診斷性與發展性功能的評估回饋機制。" },
+      { title: "生成式AI使用的教師職業倫理規範建立", desc: "探討教師在使用生成式AI輔助教學時面臨的職業倫理議題，包括AI生成教材的智慧財產、學生隱私數據的使用授權、AI輔助評分的責任歸屬，以及如何透過學校行政與專業組織層面建立明確的倫理使用規範。" }
+    ]
+  },
+  {
+    cat: "教育大數據的趨勢與應用",
+    tags: ["data", "ai"],
+    topics: [
+      { title: "學習分析（Learning Analytics）的發展趨勢與教育應用", desc: "回顧學習分析領域從LMS日誌分析到AI驅動的預測模型的演進歷程，分析當前最新趨勢（如即時學習分析儀表板、情感計算整合、多模態數據融合），並探討其在提升教學決策品質上的核心應用場景。" },
+      { title: "教育大數據的倫理治理框架", desc: "分析教育大數據收集與應用中的核心倫理挑戰——知情同意、數據所有權、演算法偏見、資訊安全——並參照GDPR、台灣個資法等相關法規，建立適用於台灣教育場域的數據倫理治理框架與實踐指引。" },
+      { title: "國家級教育資料庫的建構與研究應用", desc: "探討教育部「學習歷程資料庫」等國家級教育資料建置的進展，分析如何在保護學生隱私的前提下，開放學術研究者透過安全環境（如差分隱私、同態加密技術）存取去識別化數據，推動台灣教育研究的本土實證基礎。" },
+      { title: "預測分析（Predictive Analytics）在輟學預警中的應用", desc: "探討運用機器學習模型整合出勤率、成績趨勢、家庭背景等多元因子，建立中輟風險預警系統的技術方法與實際案例，以及如何在自動化預警觸發後設計有效的人際介入機制，避免標籤化效應。" },
+      { title: "縣市教育局的大數據驅動政策制定實踐", desc: "分析縣市教育行政機關如何建立跨校、跨年度的整合型教育數據平台，運用視覺化儀表板監測學習品質指標，並以數據為基礎制定資源配置、師資調配與補救教學政策，探討相關成功案例與障礙因素。" }
+    ]
+  },
+  {
+    cat: "資料素養驅動教育現場的決策",
+    tags: ["data", "teacher"],
+    topics: [
+      { title: "教師數據素養的定義與能力指標建構", desc: "系統性梳理數據素養（Data Literacy）在教育場域的定義，建構涵蓋「數據閱讀理解、數據詮釋分析、數據批判評估、數據溝通應用」四層次的教師數據素養能力指標，作為教師培訓課程設計的基礎框架。" },
+      { title: "學校本位數據文化的形成機制", desc: "探討高效能學校如何建立「以數據對話」的學校文化，讓教師在定期的專業對話中自然使用學習數據討論教學策略調整，分析領導者角色、時間資源配置與工具可及性三大核心促成因素。" },
+      { title: "教師的數據使用障礙與克服策略", desc: "透過質性研究方法識別台灣中小學教師在使用教育數據時面臨的主要障礙（數據過載、解讀能力不足、缺乏行動聯結、不信任數據來源），並提出針對性的支持策略，包括數據視覺化工具、數據解讀工作坊及同儕諮詢機制。" },
+      { title: "數據驅動的補救教學決策模式", desc: "探討如何系統化運用班級段考數據、作業錯誤分析、闖關測驗結果等多源數據，在補救教學前進行「數據診斷」，精準識別學生的核心學習困難，並以此為基礎設計有針對性的補救教學方案，提升補救教學的效益。" },
+      { title: "家長會議中的數據溝通設計", desc: "探討教師如何在親師座談或個別家長會議中，以清晰、易懂且不具威脅性的方式呈現學生的學習數據，避免數字過度化簡化學生樣貌，並設計以「成長對話」而非「缺失揭露」為核心的數據溝通框架。" }
+    ]
+  }
+];
+
+// BUILD NAV
+const navContainer = document.getElementById('navItems');
+DATA.forEach((section, i) => {
+  const item = document.createElement('div');
+  item.className = 'nav-item';
+  item.dataset.idx = i;
+  item.innerHTML = `<span class="nav-num">${i+1}</span><span>${section.cat}</span>`;
+  item.onclick = () => {
+    document.querySelector(`#cat-${i}`).scrollIntoView({behavior:'smooth', block:'start'});
+  };
+  navContainer.appendChild(item);
+});
+
+// BUILD CONTENT
+const content = document.getElementById('content');
+
+DATA.forEach((section, si) => {
+  const card = document.createElement('div');
+  card.className = 'category-card';
+  card.id = `cat-${si}`;
+  card.dataset.tags = section.tags.join(',');
+
+  const header = document.createElement('div');
+  header.className = 'cat-header';
+  header.innerHTML = `
+    <div class="cat-num">${si+1}</div>
+    <div class="cat-title">${section.cat}</div>
+    <div class="cat-meta">
+      <span class="cat-count">5 主題</span>
+      <div class="cat-toggle">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </div>
+    </div>`;
+
+  const topicsWrap = document.createElement('div');
+  topicsWrap.className = 'topics-wrap';
+
+  section.topics.forEach((topic, ti) => {
+    const tc = document.createElement('div');
+    tc.className = 'topic-card';
+    tc.dataset.title = topic.title;
+    tc.dataset.desc = topic.desc;
+
+    tc.innerHTML = `
+      <div class="topic-header">
+        <div class="topic-num">${ti+1}</div>
+        <div class="topic-title-text">${topic.title}</div>
+        <svg class="topic-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </div>
+      <div class="topic-body">
+        <div class="topic-desc">${topic.desc}</div>
+      </div>`;
+
+    const th = tc.querySelector('.topic-header');
+    const tb = tc.querySelector('.topic-body');
+    th.onclick = () => {
+      const isOpen = th.classList.contains('open');
+      th.classList.toggle('open', !isOpen);
+      tb.classList.toggle('open', !isOpen);
+    };
+
+    topicsWrap.appendChild(tc);
+  });
+
+  header.onclick = () => {
+    const isCollapsed = header.classList.contains('collapsed');
+    header.classList.toggle('collapsed', !isCollapsed);
+    topicsWrap.classList.toggle('collapsed', !isCollapsed);
+  };
+
+  card.appendChild(header);
+  card.appendChild(topicsWrap);
+  content.appendChild(card);
+});
+
+// SEARCH & FILTER
+const searchEl = document.getElementById('search');
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('.category-card');
+const noResults = document.getElementById('noResults');
+const resultsInfo = document.getElementById('resultsInfo');
+const navItems = document.querySelectorAll('.nav-item');
+
+let currentFilter = 'all';
+let currentSearch = '';
+
+function highlight(text, term) {
+  if (!term) return text;
+  const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+function applyFilters() {
+  let visible = 0;
+  cards.forEach((card, i) => {
+    const tags = card.dataset.tags.split(',');
+    const matchFilter = currentFilter === 'all' || tags.includes(currentFilter);
+    
+    let matchSearch = true;
+    if (currentSearch) {
+      const q = currentSearch.toLowerCase();
+      const catText = DATA[i].cat.toLowerCase();
+      const topicMatches = DATA[i].topics.some(t =>
+        t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q)
+      );
+      matchSearch = catText.includes(q) || topicMatches;
+    }
+
+    const show = matchFilter && matchSearch;
+    card.classList.toggle('hidden', !show);
+    navItems[i].style.opacity = show ? '1' : '0.35';
+
+    if (show) {
+      visible++;
+      // apply highlight
+      const topicCards = card.querySelectorAll('.topic-card');
+      DATA[i].topics.forEach((topic, ti) => {
+        const tc = topicCards[ti];
+        if (currentSearch) {
+          const q = currentSearch.toLowerCase();
+          const matchT = topic.title.toLowerCase().includes(q);
+          const matchD = topic.desc.toLowerCase().includes(q);
+          const showTopic = matchT || matchD;
+          tc.classList.toggle('topic-hidden', !showTopic);
+          if (showTopic) {
+            tc.querySelector('.topic-title-text').innerHTML = highlight(topic.title, currentSearch);
+            tc.querySelector('.topic-desc').innerHTML = highlight(topic.desc, currentSearch);
+            if (matchT || matchD) {
+              tc.querySelector('.topic-header').classList.add('open');
+              tc.querySelector('.topic-body').classList.add('open');
+            }
+          }
+        } else {
+          tc.classList.remove('topic-hidden');
+          tc.querySelector('.topic-title-text').textContent = topic.title;
+          tc.querySelector('.topic-desc').textContent = topic.desc;
+        }
+      });
+    }
+  });
+
+  noResults.style.display = visible === 0 ? 'block' : 'none';
+  resultsInfo.textContent = `顯示 ${visible} / 15 類別`;
+}
+
+searchEl.addEventListener('input', e => {
+  currentSearch = e.target.value.trim();
+  applyFilters();
+});
+
+filterBtns.forEach(btn => {
+  btn.onclick = () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    applyFilters();
+  };
+});
+
+// EXPAND ALL
+let allExpanded = false;
+document.getElementById('expandAllBtn').onclick = function() {
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.topic-header').forEach(th => {
+    th.classList.toggle('open', allExpanded);
+    th.nextElementSibling.classList.toggle('open', allExpanded);
+  });
+  this.textContent = allExpanded ? '全部收合' : '全部展開';
+};
+
+// SCROLL SPY
+const backTop = document.getElementById('back-top');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = e.target.id.replace('cat-','');
+      navItems.forEach(n => n.classList.remove('active'));
+      if (navItems[idx]) navItems[idx].classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+cards.forEach(c => observer.observe(c));
+
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+});
+</script>
+</body>
+</html>

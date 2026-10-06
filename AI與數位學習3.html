@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 與數位學習 · 主題探究地圖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d2b33; --petrol:#114b56; --petrol-2:#1b6273;
+    --paper:#f4f6f5; --card:#ffffff; --line:#dde5e4;
+    --amber:#e07a3a; --amber-soft:#f6e6d8; --amber-deep:#b8531f;
+    --muted:#5d6f70; --muted-2:#8a9a99; --teal-tint:#e8f0ef;
+    --shadow:0 1px 2px rgba(13,43,51,.05),0 8px 24px -12px rgba(13,43,51,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    background:
+      radial-gradient(120% 140% at 88% -10%, rgba(224,122,58,.16), transparent 46%),
+      linear-gradient(165deg,#0d2b33 0%,#114b56 60%,#155562 100%);
+    color:#eef4f3; padding:64px 0 0; position:relative; overflow:hidden;
+  }
+  header.hero::after{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+    background-size:42px 42px; mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:1}
+  .eyebrow{
+    font-size: 16px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--amber);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{content:"";width:34px;height:2px;background:var(--amber);display:inline-block}
+  h1.title{
+    font-family:"Noto Serif TC",serif;font-weight:900;line-height:1.12;
+    font-size:clamp(38px,6vw,72px);letter-spacing:.01em;
+  }
+  h1.title .sub{display:block;color:#9fc6c4;font-size:clamp(20px,3vw,34px);font-weight:700;margin-top:8px}
+  .lede{max-width:620px;margin:22px 0 0;color:#cfe0de;font-size:clamp(15px,1.6vw,18px)}
+  .stats{display:flex;gap:0;margin:40px 0 0;flex-wrap:wrap}
+  .stat{padding:0 34px 30px 0;margin-right:34px;border-right:1px solid rgba(255,255,255,.14)}
+  .stat:last-child{border-right:none}
+  .stat .num{font-family:"Noto Serif TC",serif;font-size: 46px;font-weight:900;color:#fff;line-height:1}
+  .stat .num em{color:var(--amber);font-style:normal}
+  .stat .lbl{font-size: 16px;color:#9fb6b4;letter-spacing:.08em;margin-top:6px}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:30;background:rgba(244,246,245,.92);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+    padding:14px 0;margin-top:42px;
+  }
+  .controls-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .search{position:relative;flex:1;min-width:220px}
+  .search input{
+    width:100%;padding:12px 14px 12px 42px;border:1.5px solid var(--line);
+    border-radius:10px;font-size: 18px;font-family:inherit;background:#fff;color:var(--ink);
+    transition:border-color .15s,box-shadow .15s;
+  }
+  .search input:focus{outline:none;border-color:var(--petrol-2);box-shadow:0 0 0 3px rgba(27,98,115,.14)}
+  .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted-2)}
+  .count-pill{
+    font-size: 16px;color:var(--muted);background:#fff;border:1px solid var(--line);
+    padding:8px 14px;border-radius:999px;white-space:nowrap;font-weight:500;
+  }
+  .count-pill b{color:var(--amber-deep);font-weight:700}
+  .reset{
+    font-size: 16px;color:var(--petrol-2);background:none;border:none;cursor:pointer;
+    font-family:inherit;padding:8px 6px;text-decoration:underline;text-underline-offset:3px;
+  }
+  .reset:hover{color:var(--amber-deep)}
+
+  /* ---------- Layout ---------- */
+  .layout{display:grid;grid-template-columns:264px 1fr;gap:38px;padding:38px 0 80px;align-items:start}
+
+  /* index rail */
+  nav.rail{position:sticky;top:78px}
+  .rail-head{font-size: 15px;letter-spacing:.22em;color:var(--muted-2);text-transform:uppercase;font-weight:700;margin-bottom:14px;padding-left:4px}
+  .rail-item{
+    display:flex;gap:12px;align-items:baseline;width:100%;text-align:left;
+    background:none;border:none;cursor:pointer;font-family:inherit;
+    padding:9px 12px;border-radius:9px;color:var(--ink);transition:background .14s,color .14s;
+    border-left:3px solid transparent;line-height:1.4;
+  }
+  .rail-item:hover{background:var(--teal-tint)}
+  .rail-item.active{background:#fff;border-left-color:var(--amber);box-shadow:var(--shadow)}
+  .rail-item .ri-num{font-family:"Noto Serif TC",serif;font-weight:900;font-size: 17px;color:var(--amber);min-width:22px}
+  .rail-item .ri-txt{font-size: 16.5px;font-weight:500}
+  .rail-item.active .ri-txt{font-weight:700;color:var(--petrol)}
+
+  /* main */
+  main{min-width:0}
+  .group{margin-bottom:54px;scroll-margin-top:84px}
+  .group-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:22px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+  .g-num{
+    font-family:"Noto Serif TC",serif;font-weight:900;font-size: 42px;line-height:.9;
+    color:#fff;background:var(--petrol);border-radius:12px;padding:10px 16px;min-width:74px;text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .g-meta h2{font-family:"Noto Serif TC",serif;font-size:clamp(21px,2.6vw,28px);font-weight:700;color:var(--ink);line-height:1.25}
+  .g-meta .g-en{font-size: 16px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-deep);font-weight:700;margin-top:5px}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;
+    box-shadow:var(--shadow);transition:transform .16s,box-shadow .16s,border-color .16s;position:relative;overflow:hidden;
+  }
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--amber);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(13,43,51,.32);border-color:#cdd9d7}
+  .card:hover::before{transform:scaleY(1)}
+  .card .tnum{
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size: 15px;font-weight:700;color:var(--amber-deep);background:var(--amber-soft);
+    border-radius:6px;padding:3px 9px;letter-spacing:.04em;margin-bottom:11px;
+  }
+  .card h3{font-size: 19.5px;font-weight:700;color:var(--petrol);line-height:1.5;margin-bottom:9px;font-family:"Noto Serif TC",serif}
+  .card p{font-size: 17px;color:var(--muted);line-height:1.78}
+  mark{background:linear-gradient(transparent 55%,#ffd9a8 55%);color:inherit;padding:0 1px;border-radius:2px}
+
+  .empty{text-align:center;padding:80px 20px;color:var(--muted-2)}
+  .empty .big{font-family:"Noto Serif TC",serif;font-size: 24px;color:var(--muted);margin-bottom:8px}
+
+  footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted-2);font-size: 16px;text-align:center}
+  footer b{color:var(--petrol)}
+
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0}
+    nav.rail{position:static;margin-bottom:8px;overflow-x:auto}
+    .rail-list{display:flex;gap:8px;padding-bottom:6px}
+    .rail-item{white-space:nowrap;border-left:none;border-bottom:3px solid transparent;border-radius:8px}
+    .rail-item.active{border-left:none;border-bottom-color:var(--amber)}
+    .rail-head{display:none}
+    .stat{padding-right:22px;margin-right:22px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+  :focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div class="eyebrow">教師專業發展 · 研究主題發想 · 校本課程規劃</div>
+    <h1 class="title">AI 與數位學習<span class="sub">主題探究地圖</span></h1>
+    <p class="lede">涵蓋從教學理論、學習診斷、課程設計到資料素養的十五大領域。每個領域提供五個可深入探究的方向與說明，協助你快速定位研究與實踐的切入點。</p>
+    <div class="stats">
+      <div class="stat"><div class="num"><em>15</em></div><div class="lbl">核心領域</div></div>
+      <div class="stat"><div class="num">75</div><div class="lbl">探究主題</div></div>
+      <div class="stat"><div class="num">5</div><div class="lbl">每領域方向</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap controls-row">
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input id="search" type="search" placeholder="搜尋主題或關鍵字（例如：評量、生成式 AI、元宇宙）" aria-label="搜尋主題">
+    </div>
+    <span class="count-pill">顯示 <b id="count">75</b> 個主題</span>
+    <button class="reset" id="reset">清除篩選</button>
+  </div>
+</div>
+
+<div class="wrap layout">
+  <nav class="rail" aria-label="領域索引">
+    <div class="rail-head">領域索引</div>
+    <div class="rail-list" id="rail"></div>
+  </nav>
+  <main id="main"></main>
+</div>
+
+<footer class="wrap">
+  <p>AI 與數位學習 · 主題探究地圖　|　<b>15 大領域 × 75 個探究主題</b>　|　可搭配同名 Word 文件使用</p>
+</footer>
+
+<script>
+const DATA = [{"id":1,"category":"AI與數位學習教學理論與趨勢","en":"Theories & Trends","topics":[{"title":"從行為主義到聯結主義的學習理論演進","desc":"梳理數位時代學習理論的轉變脈絡。聯結主義（Connectivism）主張知識存在於網絡節點之間，學習是建立與維繫連結的能力，能更貼切地解釋網路與AI環境下分散、流動的學習樣態。"},{"title":"自適應學習（Adaptive Learning）的理論基礎","desc":"以認知負荷理論與精熟學習為支柱，探討AI如何即時偵測學習者狀態，動態調整內容難度、順序與練習量，使每位學生都能在最適挑戰區持續前進。"},{"title":"混成學習與翻轉教室的最佳整合","desc":"分析線上自學與實體互動的比例配置，並說明AI如何承擔課前預習診斷，讓課堂時間聚焦於高層次討論、實作與差異化補救。"},{"title":"個人化學習的趨勢、機會與挑戰","desc":"探討以學習者為中心的範式轉移，如何釋放學習自主性，同時正視在教育公平、資料隱私與師生角色重塑上的爭議與配套。"},{"title":"AI輔助的鷹架教學（Scaffolding）","desc":"說明智慧代理人如何在維高斯基的最近發展區（ZPD）內提供即時、適量且漸退的支持，協助學生跨越獨立完成與需協助之間的落差。"}]},{"id":2,"category":"學習行為的診斷與分析","en":"Behavior Diagnosis","topics":[{"title":"學習投入度的多模態偵測","desc":"整合點擊軌跡、頁面停留、影片觀看行為與互動頻率等多模態訊號，量化學生的認知、情意與行為投入，作為調整教學節奏的依據。"},{"title":"迷思概念的自動診斷","desc":"運用作答反應組型與錯誤類型分析，找出學生系統性、可重複的概念錯誤，使補救教學能對症下藥而非僅止於重講一次。"},{"title":"學習策略與後設認知的辨識","desc":"分析學生在不同任務中的行為模式，辨識其偏好的解題路徑與自我監控習慣，協助引導更有效的學習策略。"},{"title":"棄學與輟學風險的早期預警","desc":"以登入頻率、作業繳交時間與進度落差等指標建立風險預測模型，在問題惡化前觸發及時的關懷與輔導介入。"},{"title":"專注與分心的行為指標","desc":"從互動節奏與任務切換頻率推估專注狀態，於適當時機提供提醒與調節建議，培養學生的注意力自我管理。"}]},{"id":3,"category":"AI與數位學習歷程分析","en":"Learning Analytics","topics":[{"title":"學習歷程檔案（e-Portfolio）的智慧彙整","desc":"由AI自動標記、分類並摘要學生作品與反思，將零散紀錄整合為可視化的成長軌跡，支持自我覺察與升學銜接。"},{"title":"學習路徑探勘（Learning Path Mining）","desc":"以程序探勘技術還原學生實際走過的學習順序，比對有效與無效路徑，作為課程結構優化與導引設計的證據。"},{"title":"知識追蹤（Knowledge Tracing）模型","desc":"運用貝氏知識追蹤或深度知識追蹤，動態估計學生對各知識點的精熟機率，預測下一題表現並推薦最適練習。"},{"title":"學習儀表板（Dashboard）的設計","desc":"將複雜的歷程資料轉化為教師與學生都能即時讀懂的視覺化介面，兼顧資訊密度、可解讀性與行動指引。"},{"title":"學習成效的因果分析","desc":"超越相關關係，運用準實驗設計與因果推論方法，辨識特定教學介入對學習成效的真實影響，避免被表面數據誤導。"}]},{"id":4,"category":"AI與數位學習課程規劃與設計","en":"Curriculum Design","topics":[{"title":"能力導向的課程地圖","desc":"將課綱核心素養拆解為可評量的能力指標，並建立知識點之間的先備與後續關係，形成清晰的學習地圖。"},{"title":"微學習（Microlearning）的模組化設計","desc":"把知識切分為短小、聚焦的學習單元，搭配行動載具與碎片化時間，降低認知負荷並提升完成率。"},{"title":"AI輔助的教材生成與調適","desc":"運用生成式AI快速產製多版本、多難度的教材初稿，再依學習者程度自動調適，教師專注於審訂與在地化。"},{"title":"通用學習設計（UDL）與數位無障礙","desc":"在設計階段即納入多元表徵、多元表達與多元參與管道，確保不同需求的學生都能平等取用與參與。"},{"title":"跨領域專題（PBL／STEAM）的數位整合","desc":"以真實情境問題為核心，整合數位工具與AI資源支持探究、協作與成果產出，培養跨域整合能力。"}]},{"id":5,"category":"AI與數位學習教學策略與模式","en":"Teaching Strategies","topics":[{"title":"個人化推薦的差異化教學","desc":"依診斷結果為不同學生推送差異化的練習與資源，落實一人一課表，使快者更深、慢者得補。"},{"title":"對話式AI教練（AI Tutor）的引導策略","desc":"運用蘇格拉底式提問與漸進提示，避免直接給答案，引導學生自行推理與表達，保留必要的思考歷程。"},{"title":"同儕協作學習的智慧分組","desc":"依能力互補、互動歷史與社會網絡分析進行最適分組，提升小組合作的對話品質與學習成效。"},{"title":"遊戲化與學習動機設計","desc":"透過任務、徽章、回饋與敘事情境設計，平衡內在動機與外在誘因，維持學生的持續投入。"},{"title":"精熟學習與自我調節學習（SRL）的結合","desc":"以AI協助學生設定目標、監控進度並反思調整，逐步從外部支持轉化為內在的學習自主。"}]},{"id":6,"category":"AI與數位學習教學與評量","en":"Assessment","topics":[{"title":"自動化評分與即時回饋","desc":"運用自然語言處理對開放式答題與作文進行評分與形成性回饋，縮短回饋週期，讓修正發生在學習當下。"},{"title":"形成性評量的嵌入式設計","desc":"將評量無縫嵌入學習活動，使其成為調整教學的依據而非僅是評等工具，落實以評量促進學習。"},{"title":"多元真實評量與AI輔助","desc":"以實作、專題與情境任務評量高層次能力，AI協助歷程紀錄、規準對照與證據彙整，提升評量效率與一致性。"},{"title":"電腦適性測驗（CAT）的應用","desc":"依即時作答表現動態選題，以較少題目精準估計能力，降低測驗疲勞並提供更細緻的診斷資訊。"},{"title":"素養導向的命題與品質檢核","desc":"運用AI協助產製情境化、跨領域的素養題目，並對難度、鑑別度與偏誤進行品質檢核。"}]},{"id":7,"category":"數位學習新科技（VR與教育元宇宙）教學與應用","en":"VR & Metaverse","topics":[{"title":"沉浸式VR情境學習","desc":"在虛擬實境中重現難以親臨的歷史現場、人體結構或太空場景，透過臨場感強化理解與情意連結。"},{"title":"擴增實境（AR）的實體疊加教學","desc":"將數位資訊疊加於真實環境，支援實驗操作引導、戶外地理踏查與互動式學習素材。"},{"title":"教育元宇宙的虛擬校園與化身教學","desc":"建立持續性的3D學習空間，支援跨校共學、虛擬分身互動與沉浸式社群協作。"},{"title":"數位孿生（Digital Twin）在實作教育的應用","desc":"以虛擬複製品進行高風險或高成本設備的操作演練，讓學生在零風險環境中反覆練習。"},{"title":"沉浸科技的學習成效與健康考量","desc":"探討VR／AR的認知負荷、暈眩與使用時間等實務議題，建立兼顧成效與健康的設計與使用原則。"}]},{"id":8,"category":"AI與數位學習教師專業社群","en":"Teacher PLC","topics":[{"title":"線上教師專業學習社群（vPLC）的運作","desc":"以數位平臺支持跨校、跨域教師的持續協作、共同備課與專業對話，突破時空限制。"},{"title":"共享教學資源與開放教育資源（OER）","desc":"建立可再用、可改作的數位教材庫與清楚的授權機制，讓優質資源得以流通與在地化。"},{"title":"公開課與觀議課的數位化","desc":"運用錄影、AI自動標記與課堂資料分析，深化課堂觀察的客觀性與專業對話的聚焦度。"},{"title":"AI輔助的教學反思與行動研究","desc":"以課堂資料驅動教師的探究循環，將反思從經驗直覺提升為證據本位的專業成長。"},{"title":"社群知識管理與最佳實務擴散","desc":"運用知識圖譜與推薦機制，促進有效教學實務在社群中被發現、採用與再創新。"}]},{"id":9,"category":"AI與數位學習領導","en":"Digital Leadership","topics":[{"title":"學校數位轉型的策略領導","desc":"校長與行政團隊如何擘劃願景、配置資源、整合課程與科技，帶動全校性的組織變革。"},{"title":"科技領導的核心職能","desc":"界定數位時代學校領導者所需的能力框架，涵蓋願景、賦能、評估與倫理等面向及其培育路徑。"},{"title":"資料驅動的學校經營決策","desc":"建立以證據為本的校務治理文化，將資料納入招生、課程、輔導與資源配置的決策流程。"},{"title":"數位學習的變革管理","desc":"正視並處理教師抗拒、能力落差與制度配套不足等轉型阻力，以漸進、支持的策略推動改變。"},{"title":"AI倫理與校務治理","desc":"制定校園AI使用規範、學生資料隱私保護與公平性審查機制，建立可信賴的治理框架。"}]},{"id":10,"category":"親師溝通與家長參與","en":"Parent Engagement","topics":[{"title":"智慧化親師溝通平臺","desc":"整合即時訊息、學習歷程與出缺勤資訊，降低溝通成本、提升透明度，建立穩定的信任關係。"},{"title":"學習歷程的家長可視化報告","desc":"以易懂的儀表板讓家長理解孩子的成長軌跡與需要支持之處，把抽象成績轉為可行動的訊息。"},{"title":"家長數位素養與陪伴策略","desc":"協助家長理解螢幕時間管理、資訊安全與在家學習支持，成為孩子數位學習的合作夥伴。"},{"title":"多語與跨文化的親師溝通","desc":"運用AI翻譯與具文化敏感度的設計，支持新住民及多元家庭的有效參與，落實教育公平。"},{"title":"家庭—學校—社區的協作網絡","desc":"建立三方共學的支持系統，串連社區資源，擴大孩子學習所需的社會資本。"}]},{"id":11,"category":"生成式AI在教育上的應用","en":"Generative AI","topics":[{"title":"生成式AI輔助備課與教案設計","desc":"快速產出教學活動、學習單與差異化教材初稿，讓教師把時間留給專業判斷、精修與課堂互動。"},{"title":"AI作為學習夥伴與寫作教練","desc":"在寫作、口說與專題歷程中提供即時回饋，同時刻意培養學生批判、選擇與負責任使用的能力。"},{"title":"提示工程（Prompt Engineering）的教學整合","desc":"教導師生如何有效且負責任地與AI對話，將清楚提問、迭代與驗證內化為一種新的學習能力。"},{"title":"生成式AI的學術誠信與防弊","desc":"建立合理使用規範、引用機制與AI生成內容的辨識與評量策略，在開放與誠信之間取得平衡。"},{"title":"AI幻覺與事實查核教育","desc":"培養學生對AI輸出進行查證、交叉比對與批判思辨的習慣，避免將生成內容當作權威事實。"}]},{"id":12,"category":"中小學學生AI素養的教學與評量","en":"Student AI Literacy","topics":[{"title":"AI素養的內涵與能力框架","desc":"界定知識、能力與態度三面向，涵蓋認識AI、使用AI、評估AI與AI倫理，作為課程設計的依據。"},{"title":"動手做AI的探究課程","desc":"透過無程式碼工具讓學生實際體驗訓練模型、觀察資料偏誤，從操作中建立對AI運作的直覺理解。"},{"title":"AI倫理與社會影響的議題討論","desc":"引導學生思辨演算法偏見、隱私、就業變遷與假訊息等社會議題，培養負責任的數位公民。"},{"title":"跨領域融入的AI素養教學設計","desc":"將AI素養嵌入語文、社會、自然等既有學科，而非另開獨立科目，讓素養在情境中自然養成。"},{"title":"AI素養的真實情境評量","desc":"以情境任務與實作評量學生理解、判斷與負責任運用AI的能力，避免淪為記憶式紙筆測驗。"}]},{"id":13,"category":"中小學教師AI素養的提升與評估","en":"Teacher AI Literacy","topics":[{"title":"教師AI素養的能力標準與自評工具","desc":"建立可操作的能力指標與診斷量表，協助教師自我定位起點能力並規劃成長方向。"},{"title":"分級分流的教師增能研習","desc":"依教師起點能力設計從入門到進階的研習路徑，避免一體適用造成的學用落差。"},{"title":"教學現場的AI應用實作工作坊","desc":"以實際教學任務為情境的做中學增能模式，讓教師帶著真實問題進場、帶著可用方案離場。"},{"title":"教師AI使用的倫理與專業判斷","desc":"強化教師對AI輸出的把關、修正與責任意識，確立人為專業判斷不可被取代的地位。"},{"title":"教師社群的同儕共學與教練制","desc":"以陪伴式輔導、示範教學與同儕回饋促進AI融入教學的持續發展，降低孤軍奮戰的挫折。"}]},{"id":14,"category":"教育大數據的趨勢與應用","en":"Educational Big Data","topics":[{"title":"教育大數據的來源與整合架構","desc":"整合學習平臺、行政系統與感測資料，建立可互通、可治理的資料倉儲，奠定分析基礎。"},{"title":"預測分析在學生支持的應用","desc":"以大數據預測學習風險與需求，及時觸發輔導、補救與資源介入，將支持從事後轉為事前。"},{"title":"教育資料探勘（EDM）的方法與案例","desc":"運用分群、關聯規則與序列分析等技術，從龐大資料中發掘可付諸實踐的教學洞見。"},{"title":"資料隱私、安全與去識別化","desc":"在善用資料的同時遵循個資法規與倫理規範，透過去識別化與權限管控保護學生權益。"},{"title":"從描述到指示性分析的成熟度躍升","desc":"說明描述、診斷、預測、指示四個分析層次，協助學校評估現況並規劃導入進程。"}]},{"id":15,"category":"資料素養驅動教育現場的決策","en":"Data Literacy","topics":[{"title":"教育人員的資料素養內涵","desc":"界定提問、蒐集、解讀、判斷到行動的完整循環能力，作為教師與行政人員的核心專業之一。"},{"title":"證據本位的教學決策","desc":"以資料而非單憑直覺作為調整教學的依據，建立隨時驗證假設、修正作法的專業習慣。"},{"title":"資料視覺化與溝通的決策支持","desc":"將資料轉化為清晰的故事與圖表，支持團隊對話、凝聚共識並引導具體行動。"},{"title":"班級層級的資料運用與差異化","desc":"教師運用形成性評量資料即時調整課堂教學，使差異化從理念落實為日常實踐。"},{"title":"校務層級的資料治理與文化建立","desc":"建立持續、合乎倫理且賦能師生的資料使用文化，讓資料真正服務於教與學的改善。"}]}];
+
+const main = document.getElementById('main');
+const rail = document.getElementById('rail');
+const searchEl = document.getElementById('search');
+const countEl = document.getElementById('count');
+const resetEl = document.getElementById('reset');
+let activeCat = null;
+let query = '';
+
+function pad(n){return String(n).padStart(2,'0');}
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function hl(text){
+  const t = esc(text);
+  if(!query) return t;
+  const q = query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return t.replace(new RegExp('('+q+')','gi'),'<mark>$1</mark>');
+}
+
+// build rail
+DATA.forEach(item=>{
+  const b=document.createElement('button');
+  b.className='rail-item';b.dataset.id=item.id;
+  b.innerHTML='<span class="ri-num">'+pad(item.id)+'</span><span class="ri-txt">'+esc(item.category)+'</span>';
+  b.addEventListener('click',()=>{
+    if(activeCat===item.id){activeCat=null;}else{activeCat=item.id;}
+    render();
+    const g=document.getElementById('group-'+item.id);
+    if(g && activeCat) g.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  rail.appendChild(b);
+});
+
+function matches(t){
+  if(!query) return true;
+  const q=query.toLowerCase();
+  return t.title.toLowerCase().includes(q)||t.desc.toLowerCase().includes(q);
+}
+
+function render(){
+  main.innerHTML='';
+  let shown=0;
+  DATA.forEach(item=>{
+    if(activeCat && activeCat!==item.id) return;
+    const topics=item.topics.filter(matches);
+    if(topics.length===0) return;
+    shown+=topics.length;
+    const g=document.createElement('section');
+    g.className='group';g.id='group-'+item.id;
+    let cards=topics.map((t,i)=>{
+      const realIdx=item.topics.indexOf(t)+1;
+      return '<article class="card"><span class="tnum">主題 '+realIdx+'</span>'+
+             '<h3>'+hl(t.title)+'</h3><p>'+hl(t.desc)+'</p></article>';
+    }).join('');
+    g.innerHTML=
+      '<div class="group-head"><div class="g-num">'+pad(item.id)+'</div>'+
+      '<div class="g-meta"><h2>'+esc(item.category)+'</h2>'+
+      '<div class="g-en">'+esc(item.en)+'</div></div></div>'+
+      '<div class="cards">'+cards+'</div>';
+    main.appendChild(g);
+  });
+  if(shown===0){
+    main.innerHTML='<div class="empty"><div class="big">找不到符合的主題</div><div>試試其他關鍵字，或點選「清除篩選」。</div></div>';
+  }
+  countEl.textContent=shown;
+  document.querySelectorAll('.rail-item').forEach(el=>{
+    el.classList.toggle('active', Number(el.dataset.id)===activeCat);
+  });
+}
+
+let timer;
+searchEl.addEventListener('input',e=>{
+  clearTimeout(timer);
+  timer=setTimeout(()=>{query=e.target.value.trim();render();},120);
+});
+resetEl.addEventListener('click',()=>{
+  query='';activeCat=null;searchEl.value='';render();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+render();
+</script>
+</body>
+</html>

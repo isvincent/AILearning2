@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI與數位學習 - 課程首頁</title>
+    <style>
+        /* 基礎設定與字體 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Microsoft JhengHei', '微軟正黑體';
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px; /* 字體大小適中偏大，利於閱讀 */
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* 歡迎與音效解鎖畫面 */
+        #start-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+            text-align: center;
+            padding: 2rem;
+        }
+        #start-overlay h1 {
+            font-size: 3.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            margin-bottom: 1rem;
+        }
+        #start-overlay p {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 3rem;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.1);
+        }
+        #start-btn {
+            font-size: 1.8rem;
+            padding: 1rem 4rem;
+            border: none;
+            border-radius: 50px;
+            background: #fff;
+            color: #a18cd1;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            font-weight: bold;
+        }
+        #start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            background-color: #f8f9fa;
+        }
+
+        /* 主內容區域 */
+        #main-content {
+            display: none; /* 點擊開始後顯示 */
+            width: 100%;
+            max-width: 1200px;
+            padding: 3rem 2rem;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        header h1 {
+            font-size: 3.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+        header p {
+            font-size: 1.4rem;
+            color: #555;
+        }
+
+        /* 網格佈局 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        /* 卡片設計 - 色彩豐富與互動性 */
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 8px solid transparent;
+            cursor: pointer;
+        }
+
+        /* 為每張卡片設定不同的明亮色彩 */
+        .card:nth-child(1) { border-bottom-color: #ff6b6b; }
+        .card:nth-child(2) { border-bottom-color: #4ecdc4; }
+        .card:nth-child(3) { border-bottom-color: #45b7d1; }
+        .card:nth-child(4) { border-bottom-color: #f9ca24; }
+        .card:nth-child(5) { border-bottom-color: #6ab04c; }
+        .card:nth-child(6) { border-bottom-color: #e056fd; }
+
+        /* 卡片光澤動畫效果 */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: 0.7s;
+            z-index: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        
+        .card:hover::before {
+            left: 150%;
+        }
+
+        .card .icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            z-index: 2;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .icon {
+            transform: scale(1.1);
+        }
+
+        .card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #2d3436;
+            z-index: 2;
+        }
+
+        .card .desc {
+            font-size: 1.2rem;
+            color: #636e72;
+            line-height: 1.6;
+            z-index: 2;
+        }
+
+        /* 裝飾性背景圖形 */
+        .bg-shape {
+            position: fixed;
+            z-index: -1;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+        }
+        .shape1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: #ff9a9e; }
+        .shape2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #fecfef; }
+
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.8rem; }
+            header p { font-size: 1.2rem; }
+            #start-overlay h1 { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景裝飾 -->
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+
+    <!-- 歡迎畫面 (用於確保瀏覽器允許播放音效) -->
+    <div id="start-overlay">
+        <h1>歡迎來到 AI與數位學習</h1>
+        <p>點擊下方按鈕以開啟最佳的互動與音效體驗</p>
+        <button id="start-btn">開始探索</button>
+    </div>
+
+    <!-- 課程選單主內容 -->
+    <div id="main-content">
+        <header>
+            <h1>AI與數位學習 - 課程導覽</h1>
+            <p>請選擇您想學習的單元，隨時展開您的數位旅程</p>
+        </header>
+
+        <div class="grid">
+            <a href="AI與數位學習1.html" class="card">
+                <div class="icon">🚀</div>
+                <h2>單元一</h2>
+                <div class="desc">進入 AI 的世界，探索人工智慧的基礎概念與發展脈絡。</div>
+            </a>
+            <a href="AI與數位學習2.html" class="card">
+                <div class="icon">🧠</div>
+                <h2>單元二</h2>
+                <div class="desc">深入淺出了解機器學習與深度學習的奧秘與運作原理。</div>
+            </a>
+            <a href="AI與數位學習3.html" class="card">
+                <div class="icon">💡</div>
+                <h2>單元三</h2>
+                <div class="desc">發掘 AI 在教育與數位學習上的創新應用與實踐。</div>
+            </a>
+            <a href="AI與數位學習4.html" class="card">
+                <div class="icon">🎨</div>
+                <h2>單元四</h2>
+                <div class="desc">生成式 AI 的實務操作、提示詞技巧與精采案例分析。</div>
+            </a>
+            <a href="AI與數位學習5.html" class="card">
+                <div class="icon">🛡️</div>
+                <h2>單元五</h2>
+                <div class="desc">共同探討 AI 發展帶來的倫理、隱私與安全性挑戰。</div>
+            </a>
+            <a href="AI與數位學習6.html" class="card">
+                <div class="icon">🎓</div>
+                <h2>單元六</h2>
+                <div class="desc">總結與未來展望，為自己打造專屬的 AI 數位學習計畫。</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Web Audio API 音效處理
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) {
+                // 兼容不同瀏覽器
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // 懸停音效：短促輕柔的滴答聲
+        function playHoverSound() {
+            if (!audioCtx) return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.05);
+            
+            gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime); // 音量放輕
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.05);
+        }
+
+        // 點擊音效：愉悅的上升音階 (和弦感)
+        function playClickSound() {
+            if (!audioCtx) return;
+            
+            const playNote = (freq, startTime, duration) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, startTime);
+                
+                gain.gain.setValueAtTime(0.1, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start(startTime);
+                osc.stop(startTime + duration);
+            };
+
+            const now = audioCtx.currentTime;
+            playNote(523.25, now, 0.15);       // C5
+            playNote(659.25, now + 0.08, 0.15); // E5
+            playNote(783.99, now + 0.16, 0.3);  // G5
+        }
+
+        // 開始按鈕事件：解鎖音效並進入主頁面
+        document.getElementById('start-btn').addEventListener('click', () => {
+            initAudio();
+            playClickSound();
+            
+            const overlay = document.getElementById('start-overlay');
+            overlay.style.opacity = '0';
+            
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 500);
+        });
+
+        // 為所有卡片綁定互動音效與延遲跳轉
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                playHoverSound();
+            });
+            
+            card.addEventListener('click', (e) => {
+                // 阻止預設的直接跳轉
+                e.preventDefault();
+                const targetUrl = card.getAttribute('href');
+                
+                playClickSound();
+                
+                // 讓卡片有被點擊的視覺反饋
+                card.style.transform = 'scale(0.95)';
+                
+                // 延遲跳轉，確保使用者能聽完音效並看到動畫
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 350); 
+            });
+        });
+    </script>
+</body>
+</html>
